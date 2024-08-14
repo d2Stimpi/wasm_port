@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 from typing import List, Dict
 
-from lexer import Lexer
+from csharp.parser import Parser
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -13,11 +13,8 @@ def main():
     args = parse_args()
     input_file = args.input_file
     
-    lexer = Lexer(input_file)
-    token = lexer.get_token()
-    while token != None: 
-        print(token, '[', lexer.value, ']')
-        token = lexer.get_token()
+    parser = Parser(input_file)
+    parser.parse()
 
 if __name__ == '__main__':
     main()
