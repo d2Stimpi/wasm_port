@@ -1,15 +1,34 @@
 from enum import Enum
 
-class Token(Enum):
+class TokenType(Enum):
     IDENTIFIER = "identifier"
     SEPARATOR = "separator"
     KEYWORD = "keyword"
     NUMBER = "number"
 
+class Token(Enum):
+    NAMESPACE = "namespace"
+    CLASS = "class"
+    STRUCT = "struct"
+    ENUM = "enum"
+
+    STATIC = "static"
+    PUBLIC = "public"
+    PRIVATE = "private"
+
+    # Separators
+    BRACKET_OPEN = "("
+    BRACKET_CLOSE = ")"
+    CURLY_OPEN = "{"
+    CURLY_CLOSE = "}"
+    SEMICOLON = ";"
+    COLON = ":"
+    COMMA = ","
+    DOT = "."
 
 # matcher lists:
 keywords_list = {
-    "public", "class", "void", "int"
+    "namespace", "public", "class", "void", "int"
 }
 
 separators_list = {
@@ -29,12 +48,13 @@ class Lexer:
         while True:
             line = self.file.readline()
             if line.startswith('namespace'):
+                self.file.seek(self.file.tell() - len(line) - 1)
                 break
 
     def __del__(self):
         self.file.close()
 
-    def get_token(self) -> Token:
+    def get_token(self) -> TokenType:
         tok = ''
         char = ''
         while True:
@@ -73,10 +93,10 @@ class Lexer:
 
         self.value = tok
         if tok in keywords_list:
-            return Token.KEYWORD
+            return TokenType.KEYWORD
         elif tok in separators_list:
-            return Token.SEPARATOR
+            return TokenType.SEPARATOR
         elif tok.isnumeric():
-            return Token.NUMBER
+            return TokenType.NUMBER
         
-        return Token.IDENTIFIER
+        return TokenType.IDENTIFIER

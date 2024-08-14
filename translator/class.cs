@@ -10,4 +10,11 @@ namespace SomeNamespace
             Console.WriteLine("Hello, World!");
         }
     }
+
+}
+
+
+namespace Other
+{
+    
 }
