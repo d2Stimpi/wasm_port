@@ -115,24 +115,29 @@ namespace CodeGen
 
             CppClassSyntax cppClass = new CppClassSyntax(classSyntax.Identifier.ToString(), baseTypes, modifiers);
 
-            /*Console.WriteLine($"class {classSyntax.Identifier} has modifiers:");
-            foreach (var modifier in classSyntax.Modifiers)
-            {
-                Console.WriteLine($" - {modifier}");
-            }
-            
-            Console.WriteLine($"class {classSyntax.Identifier} has bases:");
-            foreach (var item in baseTypes)
-            {
-                Console.WriteLine($" - {item}");
-            }*/
-
             return cppClass;
         }
 
         private CppMethodSyntax ConvertMethodDeclarationSyntax(MethodDeclarationSyntax methodSytax)
         {
-            CppMethodSyntax cppMethod = new CppMethodSyntax();
+            string identifier = methodSytax.Identifier.ToString();
+            List<string> modifiers = methodSytax.Modifiers.Select(x => x.ToString()).ToList();
+            List<CppArgumentSyntax> arguments = null;
+
+
+            var args = methodSytax.ParameterList.Parameters.ToList();
+            arguments = args.ConvertAll(
+                new Converter<ParameterSyntax, CppArgumentSyntax>(
+                    arg => new CppArgumentSyntax(
+                        arg.Type.ToString(),
+                        arg.Identifier.ToString(),
+                        arg.Modifiers.Select(m => m.ToString()).ToList(),
+                        arg.Default != null ? arg.Default.ToString() : "")));
+
+            var retTye = methodSytax.ReturnType;
+            Console.WriteLine($" ** retType = {retTye}");
+
+            CppMethodSyntax cppMethod = new CppMethodSyntax(identifier, modifiers, arguments);
 
             return cppMethod;
         }

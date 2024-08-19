@@ -60,6 +60,7 @@
     <Compile Include="src\CodeGen\CodeBuilder.cs" />
     <Compile Include="src\CodeGen\CodeFormatString.cs" />
     <Compile Include="src\CodeGen\CppFileWriter.cs" />
+    <Compile Include="src\Syntax\CppArgumentSyntax.cs" />
     <Compile Include="src\Syntax\CppClassSyntax.cs" />
     <Compile Include="src\Syntax\CppMethodSyntax.cs" />
     <Compile Include="src\Syntax\CppNamespaceSyntax.cs" />
