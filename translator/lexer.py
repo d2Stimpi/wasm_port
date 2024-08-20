@@ -28,7 +28,7 @@ class Token(Enum):
 
 # matcher lists:
 keywords_list = {
-    "namespace", "public", "class", "void", "int"
+    "namespace", "public", "private", "static", "class", "struct", "void", "int"
 }
 
 separators_list = {
@@ -60,11 +60,11 @@ class Lexer:
         while True:
             char = self.file.read(1)
             if not char:
-                if tok != '':
-                    break 
+                print('EOF')
+                self.value = ''
                 return None
 
-            #special case for const strings that start and end with ""
+            # special case for const strings that start and end with ""
             if char == '"':
                 tok += char
                 char = self.file.read(1)
@@ -73,6 +73,27 @@ class Lexer:
                     char = self.file.read(1)
                 tok += char
                 break
+
+            # skip comments
+            if char == '/':
+                next = self.file.read(1)
+                # single line comment
+                if next == '/':
+                    while char != '\n':
+                        char = self.file.read(1)
+                # multi line comment
+                elif next == '*':
+                    while True:
+                        char = self.file.read(1)
+                        if char == '*':
+                            next = self.file.read(1)
+                            if next == '/':
+                                char = self.file.read(1)
+                                break
+                else:
+                    self.file.seek(self.file.tell() - 1)
+
+            
 
             # tokens to skip (consume) " ", "\n", "\t"
             if char in skip_list:
@@ -98,5 +119,5 @@ class Lexer:
             return TokenType.SEPARATOR
         elif tok.isnumeric():
             return TokenType.NUMBER
-        
+
         return TokenType.IDENTIFIER
