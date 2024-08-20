@@ -43,10 +43,20 @@ namespace CodeGen.Syntax
             formated.WriteLine(classDecl);
             formated.WriteLine("{");
 
-            depth++;
-            foreach (var leaf in Members)
+            // Visit public class methods
+            formated.WriteLine("public:");
+            var publicMethods = Methods.Where(x => !x.IsPrivate).ToList();
+            foreach (var method in publicMethods)
             {
-                formated.WriteLine(leaf.GetHeaderText(depth));
+                formated.WriteLine(method.GetHeaderText(depth));
+            }
+
+            // Visit private class methods
+            formated.WriteLine("private:");
+            var privateMethods = Methods.Where(x => x.IsPrivate).ToList();
+            foreach (var method in privateMethods)
+            {
+                formated.WriteLine(method.GetHeaderText(depth));
             }
 
             formated.Write("}\n");

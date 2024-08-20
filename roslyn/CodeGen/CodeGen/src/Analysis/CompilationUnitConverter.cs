@@ -59,10 +59,22 @@ namespace CodeGen
             else
                 _cppSyntaxTree.AddSyntaxNode(cppClass);
 
-            foreach (var member in classSyntax.Members)
+            // Visit Methods
+            var methods = classSyntax.Members.Where(m => m is MethodDeclarationSyntax).ToList();
+            foreach (var m in methods)
             {
-                ProcessMethodDeclarationSyntax(member as MethodDeclarationSyntax, cppClass);
+                ProcessMethodDeclarationSyntax(m as MethodDeclarationSyntax, cppClass);
             }
+
+            // Visit Fields
+            var fields = classSyntax.Members.Where(m => m is FieldDeclarationSyntax).ToList();
+            foreach (var f in fields)
+                Console.WriteLine($"field: {f}");
+
+            // Visit Properties
+            var properties = classSyntax.Members.Where(m => m is PropertyDeclarationSyntax).ToList();
+            foreach (var p in properties)
+                Console.WriteLine($"property: {p}");
         }
 
         private void ProcessMethodDeclarationSyntax(MethodDeclarationSyntax methodSyntax, CppClassSyntax cppParentNode)
@@ -72,18 +84,6 @@ namespace CodeGen
                 cppParentNode.AddLeafNode(cppMethod);
             else
                 _cppSyntaxTree.AddSyntaxNode(cppMethod);
-
-            Console.WriteLine($"{methodSyntax.Identifier} method's modifiers:");
-            foreach (var member in methodSyntax.Modifiers)
-            {
-                Console.WriteLine($" - {member}");
-            }
-
-            Console.WriteLine($"{methodSyntax.Identifier} method's parameters:");
-            foreach (var member in methodSyntax.ParameterList.Parameters)
-            {
-                Console.WriteLine($" - {member}");
-            }
 
             Console.WriteLine($"{methodSyntax.Identifier} method's body statements:");
             foreach (var member in methodSyntax.Body.Statements)
@@ -124,7 +124,6 @@ namespace CodeGen
             List<string> modifiers = methodSytax.Modifiers.Select(x => x.ToString()).ToList();
             List<CppArgumentSyntax> arguments = null;
 
-
             var args = methodSytax.ParameterList.Parameters.ToList();
             arguments = args.ConvertAll(
                 new Converter<ParameterSyntax, CppArgumentSyntax>(
@@ -134,10 +133,10 @@ namespace CodeGen
                         arg.Modifiers.Select(m => m.ToString()).ToList(),
                         arg.Default != null ? arg.Default.ToString() : "")));
 
-            var retTye = methodSytax.ReturnType;
-            Console.WriteLine($" ** retType = {retTye}");
+            var retTypeName = methodSytax.ReturnType.ToString();
+            Console.WriteLine($" ** retType = {retTypeName}");
 
-            CppMethodSyntax cppMethod = new CppMethodSyntax(identifier, modifiers, arguments);
+            CppMethodSyntax cppMethod = new CppMethodSyntax(identifier, retTypeName, modifiers, arguments);
 
             return cppMethod;
         }

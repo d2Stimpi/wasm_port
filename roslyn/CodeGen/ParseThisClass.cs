@@ -7,14 +7,20 @@ using System.Threading.Tasks;
 namespace Stimpi
 {
     public class SampleClass : Entity, BaseObject
-    { 
+    {
+        private int _number = 10;
+        private float _floatNum;
+        public QuadComponent _quad;
+
+        public int Number { get => _number + 5; }
+
         public void MethodOne()
         {
             Console.WriteLine("Some printed text");
             Console.WriteLine($"Result of MethodTwo() = {MethodTwo(10, 6)}");
         }
 
-        public int MethodTwo(int arg1, int arg2)
+        private int MethodTwo(int arg1, int arg2)
         {
             return arg1 + arg2;
         }

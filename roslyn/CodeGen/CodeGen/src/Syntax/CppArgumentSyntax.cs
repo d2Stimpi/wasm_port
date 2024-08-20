@@ -19,9 +19,9 @@ namespace CodeGen.Syntax
         public string DefaultValue { get => _default; }
         public string Type { get => _typeName; }
 
-        public CppArgumentSyntax(string type, string name, List<string> modifiers, string defaultValue)
+        public CppArgumentSyntax(string typeName, string name, List<string> modifiers, string defaultValue)
         {
-            _typeName = type;
+            _typeName = typeName;
             _name = name;
             _modifiers = modifiers;
             _default = defaultValue;
