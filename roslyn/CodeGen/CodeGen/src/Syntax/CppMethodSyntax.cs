@@ -9,22 +9,25 @@ namespace CodeGen.Syntax
     internal sealed class CppMethodSyntax : CppSyntaxNode
     {
         private string _name;
-        private string _retTypeName;
+        private CppTypeSyntax _retType;
         private List<string> _modifiers;
         private List<CppArgumentSyntax> _arguments;
+        private CppClassSyntax _ownerClass;
 
-        public string ReturnType { get => _retTypeName; }
+        public CppTypeSyntax ReturnType { get => _retType; }
         public bool IsStatic { get => _modifiers.Contains("static"); }
         public bool IsPublic { get => _modifiers.Contains("public"); }
         public bool IsProtected { get => _modifiers.Contains("protected"); }
         public bool IsPrivate { get => _modifiers.Contains("private"); }
         public string Identifier { get => _name; }
         public List<CppArgumentSyntax> Arguments { get => _arguments; }
+        public CppClassSyntax OwnerClass { get => _ownerClass; set => _ownerClass = value; }
+        public List<CppStatementSyntax> Statements { get => Members.OfType<CppStatementSyntax>().ToList(); }
 
-        public CppMethodSyntax(string name, string retTypeName, List<string> modifiers, List<CppArgumentSyntax> args)
+        public CppMethodSyntax(string name, CppTypeSyntax retType, List<string> modifiers, List<CppArgumentSyntax> args)
         {
             _name = name;
-            _retTypeName = retTypeName;
+            _retType = retType;
             _modifiers = modifiers;
             _arguments = args;
         }
@@ -48,7 +51,31 @@ namespace CodeGen.Syntax
 
         public override string GetSourceText(int depth)
         {
-            return "method::source";
+            CodeFormatString formated = new CodeFormatString(depth);
+            string argsText = "";
+
+            foreach (var arg in Arguments)
+            {
+                if (argsText.Length == 0)
+                    argsText += arg.GetSourceText(0);
+                else
+                    argsText += ", " + arg.GetSourceText(0);
+            }
+
+            // Method definition
+            formated.WriteLine($"{ReturnType} {OwnerClass.Identifier}::{Identifier}({argsText})");
+
+            // Add method body
+            formated.AddTabs(1);
+            formated.WriteLine("{");
+            foreach (var statement in Statements)
+            {
+                formated.WriteLine(statement.GetSourceText(depth));
+            }
+            formated.WriteLine("\t // To be implemented.");
+            formated.WriteLine("}");
+
+            return formated.ToString();
         }
     }
 }

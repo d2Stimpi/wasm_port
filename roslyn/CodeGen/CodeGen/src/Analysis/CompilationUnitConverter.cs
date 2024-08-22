@@ -69,7 +69,13 @@ namespace CodeGen
             // Visit Fields
             var fields = classSyntax.Members.Where(m => m is FieldDeclarationSyntax).ToList();
             foreach (var f in fields)
-                Console.WriteLine($"field: {f}");
+            {
+                /*Console.WriteLine($"field: {f}");
+                foreach (var m in (f as FieldDeclarationSyntax).Modifiers)
+                    Console.WriteLine($" - modifier: {m}");*/
+
+                ProcessFieldDeclarationSyntax(f as FieldDeclarationSyntax, cppClass);
+            }
 
             // Visit Properties
             var properties = classSyntax.Members.Where(m => m is PropertyDeclarationSyntax).ToList();
@@ -81,17 +87,48 @@ namespace CodeGen
         {
             CppMethodSyntax cppMethod = ConvertMethodDeclarationSyntax(methodSyntax);
             if (cppParentNode != null)
+            {
                 cppParentNode.AddLeafNode(cppMethod);
+                cppMethod.OwnerClass = cppParentNode;
+            }
             else
                 _cppSyntaxTree.AddSyntaxNode(cppMethod);
 
+            // Visit statements
             Console.WriteLine($"{methodSyntax.Identifier} method's body statements:");
             foreach (var member in methodSyntax.Body.Statements)
             {
                 Console.WriteLine($" - {member}");
                 Console.WriteLine($" - Statement's kind: {member.Kind()}");
+
+                ProcessStatementSyntax(member, cppMethod);
             }
         }
+
+        private void ProcessFieldDeclarationSyntax(FieldDeclarationSyntax fieldSyntax, CppClassSyntax cppParentNode)
+        {
+            CppVariableSyntax cppVariable = ConvertFieldDeclarationSyntax(fieldSyntax);
+            if (cppParentNode != null)
+                cppParentNode.AddLeafNode(cppVariable);
+            else
+                _cppSyntaxTree.AddSyntaxNode(cppVariable);
+        }
+
+        private void ProcessStatementSyntax(StatementSyntax statementSyntax, CppMethodSyntax cppParentNode)
+        {
+            CppStatementSyntax cppStatement = ConvertStatementSyntax(statementSyntax);
+            if (cppParentNode != null)
+                cppParentNode.AddLeafNode(cppStatement);
+            else
+                _cppSyntaxTree.AddSyntaxNode(cppStatement);
+        }
+
+
+
+        /**
+         *  Conversion methods
+         */
+
 
         public CppSyntaxTree CppSyntaxTree => _cppSyntaxTree;
 
@@ -128,17 +165,35 @@ namespace CodeGen
             arguments = args.ConvertAll(
                 new Converter<ParameterSyntax, CppArgumentSyntax>(
                     arg => new CppArgumentSyntax(
-                        arg.Type.ToString(),
+                        new CppTypeSyntax(arg.Type.ToString()),
                         arg.Identifier.ToString(),
                         arg.Modifiers.Select(m => m.ToString()).ToList(),
                         arg.Default != null ? arg.Default.ToString() : "")));
 
-            var retTypeName = methodSytax.ReturnType.ToString();
-            Console.WriteLine($" ** retType = {retTypeName}");
+            CppTypeSyntax retType = new CppTypeSyntax(methodSytax.ReturnType.ToString());
+            Console.WriteLine($" ** retType = {retType}");
 
-            CppMethodSyntax cppMethod = new CppMethodSyntax(identifier, retTypeName, modifiers, arguments);
+            CppMethodSyntax cppMethod = new CppMethodSyntax(identifier, retType, modifiers, arguments);
 
             return cppMethod;
+        }
+
+        private CppVariableSyntax ConvertFieldDeclarationSyntax(FieldDeclarationSyntax fieldSyntax)
+        {
+            string identifier = fieldSyntax.Declaration.Variables.First().ToString();
+            CppTypeSyntax type = new CppTypeSyntax(fieldSyntax.Declaration.Type.ToString());
+            List<string> modifiers = fieldSyntax.Modifiers.Select(x => x.ToString()).ToList();
+
+            CppVariableSyntax cppVariable = new CppVariableSyntax(identifier, type, modifiers);
+
+            return cppVariable;
+        }
+
+        private CppStatementSyntax ConvertStatementSyntax(StatementSyntax statementSyntax)
+        {
+            CppStatementSyntax cppBlock = new CppStatementSyntax(statementSyntax.ToString());
+
+            return cppBlock;
         }
     }
 }

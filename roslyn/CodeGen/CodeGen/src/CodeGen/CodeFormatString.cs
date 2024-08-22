@@ -12,6 +12,8 @@ namespace CodeGen
         private string _tabs;
         private string _formatedText;
 
+        public int TabCount { get => _tabCount; }
+
         public override string ToString()
         {
             return _formatedText;
@@ -22,6 +24,12 @@ namespace CodeGen
             _tabCount = tabCount;
             _tabs = String.Concat(Enumerable.Repeat("\t", _tabCount));
             _formatedText = _tabs;
+        }
+
+        public void AddTabs(int tabCount)
+        {
+            SetTabs(_tabCount + tabCount);
+            Write(String.Concat(Enumerable.Repeat("\t", tabCount)));
         }
 
         public void SetTabs(int tabCount)

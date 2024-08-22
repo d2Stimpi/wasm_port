@@ -8,7 +8,7 @@ namespace CodeGen.Syntax
 {
     internal sealed class CppArgumentSyntax : CppSyntaxNode
     {
-        private string _typeName;
+        private CppTypeSyntax _type;
         private string _name;
         private List<string> _modifiers;
         private string _default;
@@ -17,11 +17,11 @@ namespace CodeGen.Syntax
         public bool IsRef { get => _modifiers.Contains("ref") || _modifiers.Contains("out") || _modifiers.Contains("in"); }
         public string Identifier { get => _name; }
         public string DefaultValue { get => _default; }
-        public string Type { get => _typeName; }
+        public CppTypeSyntax Type { get => _type; }
 
-        public CppArgumentSyntax(string typeName, string name, List<string> modifiers, string defaultValue)
+        public CppArgumentSyntax(CppTypeSyntax type, string name, List<string> modifiers, string defaultValue)
         {
-            _typeName = typeName;
+            _type = type;
             _name = name;
             _modifiers = modifiers;
             _default = defaultValue;
@@ -29,12 +29,13 @@ namespace CodeGen.Syntax
 
         public override string GetHeaderText(int depth)
         {
+            // TODO: add defaults for header file
             return $"{Type} {Identifier}";
         }
 
         public override string GetSourceText(int depth)
         {
-            return "";
+            return $"{Type} {Identifier}";
         }
     }
 

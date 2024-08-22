@@ -9,7 +9,7 @@ namespace Stimpi
     public class SampleClass : Entity, BaseObject
     {
         private int _number = 10;
-        private float _floatNum;
+        private static float _floatNum;
         public QuadComponent _quad;
 
         public int Number { get => _number + 5; }
@@ -18,6 +18,9 @@ namespace Stimpi
         {
             Console.WriteLine("Some printed text");
             Console.WriteLine($"Result of MethodTwo() = {MethodTwo(10, 6)}");
+            {
+                Console.WriteLine("Text in a block");
+            }
         }
 
         private int MethodTwo(int arg1, int arg2)

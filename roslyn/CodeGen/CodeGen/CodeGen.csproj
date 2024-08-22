@@ -61,13 +61,17 @@
     <Compile Include="src\CodeGen\CodeFormatString.cs" />
     <Compile Include="src\CodeGen\CppFileWriter.cs" />
     <Compile Include="src\Syntax\CppArgumentSyntax.cs" />
+    <Compile Include="src\Syntax\CppBlock.cs" />
     <Compile Include="src\Syntax\CppClassSyntax.cs" />
     <Compile Include="src\Syntax\CppMethodSyntax.cs" />
     <Compile Include="src\Syntax\CppNamespaceSyntax.cs" />
+    <Compile Include="src\Syntax\CppStatementSyntax.cs" />
     <Compile Include="src\Syntax\CppSyntaxTree.cs" />
     <Compile Include="src\Analysis\Parser.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="src\Syntax\CppSyntaxNode.cs" />
+    <Compile Include="src\Syntax\CppTypeSyntax.cs" />
+    <Compile Include="src\Syntax\CppVariableSyntax.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Humanizer, Version=2.14.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">

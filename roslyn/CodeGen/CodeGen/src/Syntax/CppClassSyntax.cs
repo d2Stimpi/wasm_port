@@ -16,6 +16,7 @@ namespace CodeGen.Syntax
         public string Identifier { get => _name; }
 
         public List<CppMethodSyntax> Methods { get => Members.OfType<CppMethodSyntax>().ToList(); }
+        public List<CppVariableSyntax> Variables { get => Members.OfType<CppVariableSyntax>().ToList(); }
 
         public CppClassSyntax(string name, List<string> baseTypes, List<string> modifiers)
         {
@@ -44,19 +45,30 @@ namespace CodeGen.Syntax
             formated.WriteLine("{");
 
             // Visit public class methods
-            formated.WriteLine("public:");
             var publicMethods = Methods.Where(x => !x.IsPrivate).ToList();
+            if (publicMethods.Any())
+                formated.WriteLine("public:");
             foreach (var method in publicMethods)
             {
                 formated.WriteLine(method.GetHeaderText(depth));
             }
 
             // Visit private class methods
-            formated.WriteLine("private:");
             var privateMethods = Methods.Where(x => x.IsPrivate).ToList();
+            if (privateMethods.Any())
+                formated.WriteLine("private:");
             foreach (var method in privateMethods)
             {
                 formated.WriteLine(method.GetHeaderText(depth));
+            }
+
+            // Visit member variables
+            var privateMemberVars = Variables; // all are considered private
+            if (privateMemberVars.Any())
+                formated.WriteLine("private:");
+            foreach (var variable in privateMemberVars)
+            {
+                formated.WriteLine(variable.GetHeaderText(depth));
             }
 
             formated.Write("}\n");
@@ -65,7 +77,25 @@ namespace CodeGen.Syntax
 
         public override string GetSourceText(int depth)
         {
-            return "";
+            CodeFormatString formated = new CodeFormatString(depth);
+
+            // Visit public class methods
+            var publicMethods = Methods.Where(x => !x.IsPrivate).ToList();
+            foreach (var method in publicMethods)
+            {
+                formated.WriteLine(method.GetSourceText(depth));
+                formated.WriteLine(""); // separator
+            }
+
+            // Visit private class methods
+            var privateMethods = Methods.Where(x => x.IsPrivate).ToList();
+            foreach (var method in privateMethods)
+            {
+                formated.WriteLine(method.GetSourceText(depth));
+                formated.WriteLine(""); // separator
+            }
+
+            return formated.ToString();
         }
     }
 }
