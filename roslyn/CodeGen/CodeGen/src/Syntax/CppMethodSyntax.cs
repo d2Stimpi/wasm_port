@@ -11,7 +11,7 @@ namespace CodeGen.Syntax
         private string _name;
         private CppTypeSyntax _retType;
         private List<string> _modifiers;
-        private List<CppArgumentSyntax> _arguments;
+        private List<CppParameterSyntax> _arguments;
         private CppClassSyntax _ownerClass;
 
         public CppTypeSyntax ReturnType { get => _retType; }
@@ -20,11 +20,11 @@ namespace CodeGen.Syntax
         public bool IsProtected { get => _modifiers.Contains("protected"); }
         public bool IsPrivate { get => _modifiers.Contains("private"); }
         public string Identifier { get => _name; }
-        public List<CppArgumentSyntax> Arguments { get => _arguments; }
+        public List<CppParameterSyntax> Arguments { get => _arguments; }
         public CppClassSyntax OwnerClass { get => _ownerClass; set => _ownerClass = value; }
-        public List<CppStatementSyntax> Statements { get => Members.OfType<CppStatementSyntax>().ToList(); }
+        //public List<CppStatementSyntax> Statements { get => Members.OfType<CppStatementSyntax>().ToList(); }
 
-        public CppMethodSyntax(string name, CppTypeSyntax retType, List<string> modifiers, List<CppArgumentSyntax> args)
+        public CppMethodSyntax(string name, CppTypeSyntax retType, List<string> modifiers, List<CppParameterSyntax> args)
         {
             _name = name;
             _retType = retType;
@@ -68,7 +68,7 @@ namespace CodeGen.Syntax
             // Add method body
             formated.AddTabs(1);
             formated.WriteLine("{");
-            foreach (var statement in Statements)
+            foreach (var statement in Members)
             {
                 formated.WriteLine(statement.GetSourceText(depth));
             }

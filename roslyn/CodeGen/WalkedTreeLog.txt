@@ -1,0 +1,107 @@
+Walking method begin: MethodOne
+        MethodDeclaration
+                PredefinedType
+                ParameterList
+                Block
+                        ExpressionStatement
+                                InvocationExpression
+                                        SimpleMemberAccessExpression
+                                                IdentifierName
+                                                IdentifierName
+                                        ArgumentList
+                                                Argument
+                                                        StringLiteralExpression
+                        ExpressionStatement
+                                InvocationExpression
+                                        SimpleMemberAccessExpression
+                                                IdentifierName
+                                                IdentifierName
+                                        ArgumentList
+                                                Argument
+                                                        InterpolatedStringExpression
+                                                                InterpolatedStringText
+                                                                Interpolation
+                                                                        InvocationExpression
+                                                                                IdentifierName
+                                                                                ArgumentList
+                                                                                        Argument
+                                                                                                NumericLiteralExpression
+                                                                                        Argument
+                                                                                                NumericLiteralExpression
+                        Block
+                                ExpressionStatement
+                                        InvocationExpression
+                                                SimpleMemberAccessExpression
+                                                        IdentifierName
+                                                        IdentifierName
+                                                ArgumentList
+                                                        Argument
+                                                                StringLiteralExpression
+Walking method end: MethodOne
+
+
+
+
+Walking method begin: MethodOne
+        MethodDeclaration ::
+        public void MethodOne()
+        {
+            Console.WriteLine("Some printed text");
+            Console.WriteLine($"Result of MethodTwo() = {MethodTwo(10, 6)}");
+            {
+                Console.WriteLine("Text in a block");
+            }
+        }
+
+                PredefinedType :: void
+                ParameterList :: ()
+
+                Block ::         {
+            Console.WriteLine("Some printed text");
+            Console.WriteLine($"Result of MethodTwo() = {MethodTwo(10, 6)}");
+            {
+                Console.WriteLine("Text in a block");
+            }
+        }
+
+                        ExpressionStatement ::             Console.WriteLine("Some printed text");
+
+                                InvocationExpression ::             Console.WriteLine("Some printed text")
+                                        SimpleMemberAccessExpression ::             Console.WriteLine
+                                                IdentifierName ::             Console
+                                                IdentifierName :: WriteLine
+                                        ArgumentList :: ("Some printed text")
+                                                Argument :: "Some printed text"
+                                                        StringLiteralExpression :: "Some printed text"
+                        ExpressionStatement ::             Console.WriteLine($"Result of MethodTwo() = {MethodTwo(10, 6)}");
+
+                                InvocationExpression ::             Console.WriteLine($"Result of MethodTwo() = {MethodTwo(10, 6)}")
+                                        SimpleMemberAccessExpression ::             Console.WriteLine
+                                                IdentifierName ::             Console
+                                                IdentifierName :: WriteLine
+                                        ArgumentList :: ($"Result of MethodTwo() = {MethodTwo(10, 6)}")
+                                                Argument :: $"Result of MethodTwo() = {MethodTwo(10, 6)}"
+                                                        InterpolatedStringExpression :: $"Result of MethodTwo() = {MethodTwo(10, 6)}"
+                                                                InterpolatedStringText :: Result of MethodTwo() =
+                                                                Interpolation :: {MethodTwo(10, 6)}
+                                                                        InvocationExpression :: MethodTwo(10, 6)
+                                                                                IdentifierName :: MethodTwo
+                                                                                ArgumentList :: (10, 6)
+                                                                                        Argument :: 10
+                                                                                                NumericLiteralExpression :: 10
+                                                                                        Argument :: 6
+                                                                                                NumericLiteralExpression :: 6
+                        Block ::             {
+                Console.WriteLine("Text in a block");
+            }
+
+                                ExpressionStatement ::                 Console.WriteLine("Text in a block");
+
+                                        InvocationExpression ::                 Console.WriteLine("Text in a block")
+                                                SimpleMemberAccessExpression ::                 Console.WriteLine
+                                                        IdentifierName ::                 Console
+                                                        IdentifierName :: WriteLine
+                                                ArgumentList :: ("Text in a block")
+                                                        Argument :: "Text in a block"
+                                                                StringLiteralExpression :: "Text in a block"
+Walking method end: MethodOne

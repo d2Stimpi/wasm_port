@@ -17,7 +17,7 @@ namespace Stimpi
         public void MethodOne()
         {
             Console.WriteLine("Some printed text");
-            Console.WriteLine($"Result of MethodTwo() = {MethodTwo(10, 6)}");
+            Console.WriteLine($"Result of MethodTwo() = {MethodTwo(10, MethodTwo(3, 3))}");
             {
                 Console.WriteLine("Text in a block");
             }
