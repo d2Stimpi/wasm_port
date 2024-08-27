@@ -105,3 +105,125 @@ Walking method begin: MethodOne
                                                         Argument :: "Text in a block"
                                                                 StringLiteralExpression :: "Text in a block"
 Walking method end: MethodOne
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Walking method begin: MethodOne
+        MethodDeclaration
+                PredefinedType
+                ParameterList
+                Block
+                        ExpressionStatement
+                                InvocationExpression
+                                        SimpleMemberAccessExpression
+                                                IdentifierName
+                                                IdentifierName
+                                        ArgumentList
+                                                Argument
+                                                        StringLiteralExpression
+                        ExpressionStatement
+                                InvocationExpression
+                                        SimpleMemberAccessExpression
+                                                IdentifierName
+                                                IdentifierName
+                                        ArgumentList
+                                                Argument
+                                                        InterpolatedStringExpression
+                                                                InterpolatedStringText
+                                                                Interpolation
+                                                                        InvocationExpression
+                                                                                IdentifierName
+                                                                                ArgumentList
+                                                                                        Argument
+                                                                                                NumericLiteralExpression
+                                                                                        Argument
+                                                                                                InvocationExpression
+                                                                                                        IdentifierName
+                                                                                                        ArgumentList
+                                                                                                                Argument
+
+        NumericLiteralExpression
+                                                                                                                Argument
+
+        NumericLiteralExpression
+                        Block
+                                ExpressionStatement
+                                        InvocationExpression
+                                                SimpleMemberAccessExpression
+                                                        IdentifierName
+                                                        IdentifierName
+                                                ArgumentList
+                                                        Argument
+                                                                StringLiteralExpression
+Walking method end: MethodOne
+Walking method begin: MethodTwo
+        MethodDeclaration
+                PredefinedType
+                ParameterList
+                        Parameter
+                                PredefinedType
+                        Parameter
+                                PredefinedType
+                Block
+                        ReturnStatement
+                                AddExpression
+                                        IdentifierName
+                                        IdentifierName
+Walking method end: MethodTwo
+Walking method begin: GetComponent
+        MethodDeclaration
+                IdentifierName
+                TypeParameterList
+                        TypeParameter
+                ParameterList
+                TypeParameterConstraintClause
+                        IdentifierName
+                        TypeConstraint
+                                IdentifierName
+                        ConstructorConstraint
+                Block
+                        IfStatement
+                                LogicalNotExpression
+                                        InvocationExpression
+                                                GenericName
+                                                        TypeArgumentList
+                                                                IdentifierName
+                                                ArgumentList
+                                ReturnStatement
+                                        NullLiteralExpression
+                        LocalDeclarationStatement
+                                VariableDeclaration
+                                        IdentifierName
+                                        VariableDeclarator
+                                                EqualsValueClause
+                                                        ObjectCreationExpression
+                                                                IdentifierName
+                                                                ArgumentList
+                                                                ObjectInitializerExpression
+                                                                        SimpleAssignmentExpression
+                                                                                IdentifierName
+                                                                                ThisExpression
+                        ReturnStatement
+                                IdentifierName
+Walking method end: GetComponent
+property: public int Number { get => _number + 5; }
+Walking method begin: HelperMethod
+        MethodDeclaration
+                PredefinedType
+                ParameterList
+                Block
+Walking method end: HelperMethod

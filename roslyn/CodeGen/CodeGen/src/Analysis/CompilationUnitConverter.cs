@@ -28,13 +28,24 @@ namespace CodeGen
             // Convert C# Syntax classes to Cpp Syntax classes
             _cppSyntaxTree = new CppSyntaxTree();
 
-            foreach (var member in _activeAST.Members)
+            /*foreach (var member in _activeAST.Members)
             {
                 if (member is NamespaceDeclarationSyntax)
                 {
                     ProcessNamespaceDeclarationSyntax(member as NamespaceDeclarationSyntax);
                 }
-            }
+            }*/
+
+            LoggingSyntaxWalker logger = new LoggingSyntaxWalker();
+            logger.Visit(_activeAST);
+
+            ConverterSyntaxWalker converterWalker = new ConverterSyntaxWalker();
+            converterWalker.Visit(_activeAST);
+
+            Console.WriteLine("\n\n==== Following is AST converted to Cpp Syntax Nodes ====");
+
+            CppASTWalker astWalker = new CppASTWalker();
+            astWalker.Visit(converterWalker.SyntaxTree);
         }
 
         private void ProcessNamespaceDeclarationSyntax(NamespaceDeclarationSyntax namespaceSyntax)
@@ -94,20 +105,8 @@ namespace CodeGen
             else
                 _cppSyntaxTree.AddSyntaxNode(cppMethod);
 
-            Console.WriteLine("Walking method begin: " + methodSyntax.Identifier);
             MethodSyntaxWalker methodWalker = new MethodSyntaxWalker(cppMethod);
             methodWalker.Visit(methodSyntax);
-            Console.WriteLine("Walking method end: " + methodSyntax.Identifier);
-
-            // Visit statements
-            /*Console.WriteLine($"{methodSyntax.Identifier} method's body statements:");
-            foreach (var member in methodSyntax.Body.Statements)
-            {
-                Console.WriteLine($" - {member}");
-                Console.WriteLine($" - Statement's kind: {member.Kind()}");
-
-                ProcessStatementSyntax(member, cppMethod);
-            }*/
         }
 
         private void ProcessFieldDeclarationSyntax(FieldDeclarationSyntax fieldSyntax, CppClassSyntax cppParentNode)
@@ -118,15 +117,6 @@ namespace CodeGen
             else
                 _cppSyntaxTree.AddSyntaxNode(cppVariable);
         }
-
-        /*private void ProcessStatementSyntax(StatementSyntax statementSyntax, CppMethodSyntax cppParentNode)
-        {
-            CppStatementSyntax cppStatement = ConvertStatementSyntax(statementSyntax);
-            if (cppParentNode != null)
-                cppParentNode.AddLeafNode(cppStatement);
-            else
-                _cppSyntaxTree.AddSyntaxNode(cppStatement);
-        }*/
 
 
 
@@ -176,7 +166,6 @@ namespace CodeGen
                         arg.Default != null ? arg.Default.ToString() : "")));
 
             CppTypeSyntax retType = new CppTypeSyntax(methodSytax.ReturnType.ToString());
-            //Console.WriteLine($" ** retType = {retType}");
 
             CppMethodSyntax cppMethod = new CppMethodSyntax(identifier, retType, modifiers, arguments);
 
@@ -193,12 +182,5 @@ namespace CodeGen
 
             return cppVariable;
         }
-
-        /*private CppStatementSyntax ConvertStatementSyntax(StatementSyntax statementSyntax)
-        {
-            CppStatementSyntax cppBlock = new CppStatementSyntax(statementSyntax.ToString());
-
-            return cppBlock;
-        }*/
     }
 }

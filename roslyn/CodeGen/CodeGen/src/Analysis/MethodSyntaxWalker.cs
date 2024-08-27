@@ -15,6 +15,7 @@ namespace CodeGen
     {
         private int _tabs = 0;
         private bool _logOn = false;
+        private bool _fullTreeLogOn = false;
 
         private CppSyntaxNode _parentMethodNode;
         
@@ -30,7 +31,7 @@ namespace CodeGen
         public override void Visit(SyntaxNode node)
         {
             _tabs++;
-            if (_logOn)
+            if (_fullTreeLogOn)
                 Console.WriteLine(new String('\t', _tabs) + node.Kind());
 
             base.Visit(node);
@@ -65,7 +66,7 @@ namespace CodeGen
             // First visit
             if (node.Parent.IsKind(SyntaxKind.ExpressionStatement))
             {
-                Console.WriteLine($"VisitInvocationExpression - root {node.GetText()}");
+                if (_logOn) Console.WriteLine($"VisitInvocationExpression - root {node.GetText()}");
                 _activeCppSyntax = new CppInvocationSyntax();
 
                 base.VisitInvocationExpression(node);
@@ -74,7 +75,7 @@ namespace CodeGen
             {
                 _cppSyntaxStack.Push(new CppInvocationSyntax());
 
-                Console.WriteLine($"VisitInvocationExpression - nested {node.GetText()}");
+                if (_logOn) Console.WriteLine($"VisitInvocationExpression - nested {node.GetText()}");
                 base.VisitInvocationExpression(node);
 
                 var args = node.ArgumentList.Arguments;
@@ -82,6 +83,7 @@ namespace CodeGen
                 if (_activeCppSyntax == null)
                 {
                     Console.WriteLine("\t*** Unexpected error: _activeCppSyntax is NULL!! ***\t");
+                    Console.WriteLine($"\t*** VisitInvocationExpression - root {node.GetText()} parent kind: {node.Parent.Kind()} ***\t");
                 }
                 else
                 {
@@ -163,6 +165,22 @@ namespace CodeGen
             {
                 Console.WriteLine($"Unsupported identifier's parent kind [{node.Parent.Kind()}]");
             }
+        }
+
+        public override void VisitArgumentList(ArgumentListSyntax node)
+        {
+            base.VisitArgumentList(node);
+
+            Console.WriteLine("====================================================");
+            Console.WriteLine($"Node: {node.Parent.Kind()}");
+            foreach (var arg in node.Arguments)
+                Console.WriteLine($"Arg: {arg}");
+
+            if (_cppSyntaxStack.Count == 0)
+                Console.WriteLine($"On stack cpp node: {_activeCppSyntax.GetSourceText(0)}");
+            else
+                Console.WriteLine($"On stack cpp node: {_cppSyntaxStack.Peek().GetSourceText(0)}");
+            Console.WriteLine("====================================================");
         }
     }
 }

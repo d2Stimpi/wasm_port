@@ -57,10 +57,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Analysis\CompilationUnitConverter.cs" />
+    <Compile Include="src\Analysis\ConverterSyntaxWalker.cs" />
+    <Compile Include="src\Analysis\LoggingSyntaxWalker.cs" />
     <Compile Include="src\Analysis\MethodSyntaxWalker.cs" />
     <Compile Include="src\CodeGen\CodeBuilder.cs" />
     <Compile Include="src\CodeGen\CodeFormatString.cs" />
     <Compile Include="src\CodeGen\CppFileWriter.cs" />
+    <Compile Include="src\CppSyntax\CppBaseListSyntax.cs" />
+    <Compile Include="src\CppSyntax\CppClassSyntax.cs" />
+    <Compile Include="src\CppSyntax\CppFieldDeclarationSyntax.cs" />
+    <Compile Include="src\CppSyntax\CppIdentifierSyntax.cs" />
+    <Compile Include="src\CppSyntax\CppNamespaceSyntax.cs" />
+    <Compile Include="src\CppSyntax\CppPredefineType.cs" />
+    <Compile Include="src\CppSyntax\CppRootSyntaxNode.cs" />
+    <Compile Include="src\CppSyntax\CppSimpleBaseTypeSyntax.cs" />
+    <Compile Include="src\CppSyntax\CppSyntaxKind.cs" />
+    <Compile Include="src\CppSyntax\CppSyntaxNode.cs" />
+    <Compile Include="src\Analysis\CppASTWalker.cs" />
+    <Compile Include="src\CppSyntax\CppUnhandledSyntax.cs" />
+    <Compile Include="src\CppSyntax\CppVariableDeclarationSyntax.cs" />
+    <Compile Include="src\CppSyntax\CppVariableDeclaratorSyntax.cs" />
     <Compile Include="src\Syntax\CppArgumentSyntax.cs" />
     <Compile Include="src\Syntax\CppInvocationSyntax.cs" />
     <Compile Include="src\Syntax\CppMemberInvocationSyntax.cs" />

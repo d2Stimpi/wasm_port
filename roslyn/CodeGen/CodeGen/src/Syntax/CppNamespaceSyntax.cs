@@ -47,7 +47,6 @@ namespace CodeGen.Syntax
             // Go trough all members of classes in namespace
             foreach (CppClassSyntax classSyntax in Classes)
             {
-                Console.WriteLine($"LINQ: class in namespace {classSyntax.Identifier}");
                 formated.WriteLine(classSyntax.GetSourceText(depth));
             }
 
