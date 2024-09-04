@@ -4,26 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeGen.Syntax
+namespace CodeGen.CppSyntax
 {
-    internal sealed class CppArgumentSyntax : CppSyntaxNode
+    class CppExpressionStatementSyntax : CppSyntaxNode
     {
-        private CppSyntaxNode _argument;
-
-        public CppSyntaxNode Argument { get => _argument; set => _argument = value; }
-
-        public CppArgumentSyntax(CppSyntaxNode arg)
+        public CppExpressionStatementSyntax() : base(CppSyntaxKind.ExpressionStatement)
         {
-            _argument = arg;
         }
 
         public override string GetHeaderText(int depth)
         {
+            CodeFormatString formated = new CodeFormatString(depth);
+
             return "";
         }
 
         public override string GetSourceText(int depth)
         {
+            CodeFormatString formated = new CodeFormatString(depth);
+
             return "";
         }
     }

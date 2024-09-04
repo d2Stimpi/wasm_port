@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using CodeGen.Syntax;
+using CodeGen.CppSyntax;
 
 namespace CodeGen
 {
@@ -14,9 +14,9 @@ namespace CodeGen
     {
         private CppFileWriter _sourceFileWriter;
         private CppFileWriter _headerFileWriter;
-        private CppSyntaxTree _tree;
+        private CppRootSyntaxNode _tree;
 
-        public CodeBuilder(CppSyntaxTree tree)
+        public CodeBuilder(CppRootSyntaxNode tree)
         {
             _tree = tree;
         }

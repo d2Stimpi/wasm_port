@@ -20,6 +20,15 @@ namespace CodeGen.CppSyntax
         VariableDeclaration = 9,    // Example: static class member
         PredefinedType  = 10,
         VariableDeclarator = 11,    // Variable name + default value
+        EqualsValueClause = 12,
+        NumericLiteral = 13,
+        StringLiteral = 14,
+        MethodDeclaration = 15,
+        ParameterList = 16,
+        TypeParameterList = 17,     // Template type
+        AddExpression = 18,
+        ExpressionStatement = 19,
+        CompilationUnit = 20,       // Move to begining
 
         Unhandled = 1000
     }

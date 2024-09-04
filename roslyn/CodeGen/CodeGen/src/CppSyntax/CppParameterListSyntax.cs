@@ -6,27 +6,23 @@ using System.Threading.Tasks;
 
 namespace CodeGen.CppSyntax
 {
-    internal sealed class CppRootSyntaxNode : CppSyntaxNode
+    internal sealed class CppParameterListSyntax : CppSyntaxNode
     {
-        public CppRootSyntaxNode() : base(CppSyntaxKind.Root)
+        public CppParameterListSyntax() : base(CppSyntaxKind.ParameterList)
         {
-
         }
 
         public override string GetHeaderText(int depth)
         {
             CodeFormatString formated = new CodeFormatString(depth);
 
-            foreach (var member in Members)
-            {
-                formated.WriteLine(member.GetHeaderText(depth));
-            }
-
-            return formated.ToString();
+            return "";
         }
 
         public override string GetSourceText(int depth)
         {
+            CodeFormatString formated = new CodeFormatString(depth);
+
             return "";
         }
     }

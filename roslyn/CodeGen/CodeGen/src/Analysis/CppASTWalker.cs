@@ -14,8 +14,13 @@ namespace CodeGen
 
         public void Visit(CppSyntaxNode node)
         {
+            string csharpKind = "";
+
+            if (node is CppUnhandledSyntax)
+                csharpKind = " [" + (node as CppUnhandledSyntax).CSharpKind + "]";
+
             _tabs++;
-            Console.WriteLine(new String('\t', _tabs) + node.Kind.ToString());
+            Console.WriteLine($"{new String('\t', _tabs)} {node.Kind.ToString()}{csharpKind}");
             foreach (var member in node.Members)
             {
                 Visit(member);

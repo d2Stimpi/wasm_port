@@ -30,10 +30,12 @@ namespace CodeGen
             _nodeStack.Push(_rootNode);
         }
 
-        private void StackReplace(CppSyntaxNode node)
+        private CppSyntaxNode StackReplace(CppSyntaxNode node)
         {
             _nodeStack.Pop();
             _nodeStack.Push(node);
+
+            return node;
         }
 
         public override void Visit(SyntaxNode node)
@@ -52,6 +54,13 @@ namespace CodeGen
             }
         }
 
+        public override void VisitCompilationUnit(CompilationUnitSyntax node)
+        {
+            StackReplace(new CppCompilationUnitNode());
+
+            base.VisitCompilationUnit(node);
+        }
+
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
             StackReplace(new CppIdentifierSyntax());
@@ -61,14 +70,16 @@ namespace CodeGen
 
         public override void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
         {
-            StackReplace(new CppNamespaceSyntax());
+            CppNamespaceSyntax namespaceSytnax = StackReplace(new CppNamespaceSyntax()) as CppNamespaceSyntax;
+            namespaceSytnax.Identifier = node.Name.ToString();
 
             base.VisitNamespaceDeclaration(node);
         }
 
         public override void VisitClassDeclaration(ClassDeclarationSyntax node)
         {
-            StackReplace(new CppClassSyntax());
+            CppClassSyntax classSyntax = StackReplace(new CppClassSyntax()) as CppClassSyntax;
+            classSyntax.Identifier = node.Identifier.ToString();
 
             base.VisitClassDeclaration(node);
         }
@@ -106,6 +117,85 @@ namespace CodeGen
             StackReplace(new CppVariableDeclaratorSyntax());
 
             base.VisitVariableDeclarator(node);
+        }
+
+        public override void VisitVariableDeclaration(VariableDeclarationSyntax node)
+        {
+            StackReplace(new CppVariableDeclarationSyntax());
+
+            base.VisitVariableDeclaration(node);
+        }
+
+        public override void VisitEqualsValueClause(EqualsValueClauseSyntax node)
+        {
+            StackReplace(new CppEqualsValueClauseSyntax());
+
+            base.VisitEqualsValueClause(node);
+        }
+
+        public override void VisitLiteralExpression(LiteralExpressionSyntax node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.NumericLiteralExpression:
+                    StackReplace(new CppNumericLiteralSyntax());
+                    break;
+                case SyntaxKind.StringLiteralExpression:
+                    StackReplace(new CppStringLiteralSyntax());
+                    break;
+                default:
+                    break;
+            }
+
+            base.VisitLiteralExpression(node);
+        }
+
+        public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
+        {
+            StackReplace(new CppMethodDeclarationSyntax());
+
+            base.VisitMethodDeclaration(node);
+        }
+
+        public override void VisitParameterList(ParameterListSyntax node)
+        {
+            StackReplace(new CppParameterListSyntax());
+
+            base.VisitParameterList(node);
+        }
+
+        public override void VisitTypeParameterList(TypeParameterListSyntax node)
+        {
+            StackReplace(new CppTypeParameterListSyntax());
+
+            base.VisitTypeParameterList(node);
+        }
+
+        public override void VisitExpressionStatement(ExpressionStatementSyntax node)
+        {
+            StackReplace(new CppExpressionStatementSyntax());
+
+            base.VisitExpressionStatement(node);
+        }
+
+        public override void VisitBinaryExpression(BinaryExpressionSyntax node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.AddExpression:
+                    StackReplace(new CppAddExpressionSyntax());
+                    break;
+                default:
+                    break;
+            }
+
+            base.VisitBinaryExpression(node);
+        }
+
+        public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
+        {
+            PropertyConverter propertyConverter = new PropertyConverter();
+            propertyConverter.VisitPropertyDeclaration(node);
         }
     }
 }

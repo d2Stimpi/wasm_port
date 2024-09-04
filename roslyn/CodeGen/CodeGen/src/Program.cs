@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using CodeGen.Syntax;
+using CodeGen.CppSyntax;
 
 namespace CodeGen
 {
@@ -16,7 +16,7 @@ namespace CodeGen
             string rootDir = "D:\\compilers\\wasm_test\\roslyn\\CodeGen";
 
             Parser parser = new Parser();
-            CppSyntaxTree cppTree = parser.ParseFile(Path.Combine(rootDir, "ParseThisClass.cs"));
+            CppRootSyntaxNode cppTree = parser.ParseFile(Path.Combine(rootDir, "ParseThisClass.cs"));
 
             CodeBuilder builder = new CodeBuilder(cppTree);
             builder.Emit(Path.Combine(rootDir, "CppClass.h"), FileType.Header);

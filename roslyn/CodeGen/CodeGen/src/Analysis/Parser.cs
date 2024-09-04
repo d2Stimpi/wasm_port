@@ -9,16 +9,16 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CSharp;
 
-using CodeGen.Syntax;
+using CodeGen.CppSyntax;
 
 namespace CodeGen
 {
     internal class Parser
     {
-        public CppSyntaxTree ParseFile(String filePath)
+        public CppRootSyntaxNode ParseFile(String filePath)
         {
             SyntaxTree tree = null;
-            CppSyntaxTree cppTree = null;
+            CppRootSyntaxNode cppTree = null;
 
             try
             {

@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// TODO:
+// - handle writing of include statements
+// - compilation unit should represent a file pair h/cpp
+
 namespace CodeGen.CppSyntax
 {
-    internal sealed class CppRootSyntaxNode : CppSyntaxNode
+    class CppCompilationUnitNode : CppSyntaxNode
     {
-        public CppRootSyntaxNode() : base(CppSyntaxKind.Root)
-        {
 
+        public CppCompilationUnitNode() : base(CppSyntaxKind.CompilationUnit)
+        {
         }
 
         public override string GetHeaderText(int depth)
