@@ -28,7 +28,8 @@ namespace CodeGen.CppSyntax
         TypeParameterList = 17,     // Template type
         AddExpression = 18,
         ExpressionStatement = 19,
-        CompilationUnit = 20,       // Move to begining
+        CompilationUnit = 20,       // Move to beginning
+        Parameter = 21,
 
         Unhandled = 1000
     }

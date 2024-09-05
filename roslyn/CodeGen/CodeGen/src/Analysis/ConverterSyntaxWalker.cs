@@ -107,7 +107,8 @@ namespace CodeGen
 
         public override void VisitPredefinedType(PredefinedTypeSyntax node)
         {
-            StackReplace(new CppPredefineType());
+            CppPredefineType typeSyntax = StackReplace(new CppPredefineType()) as CppPredefineType;
+            typeSyntax.TypeName = node.Keyword.ToString();
 
             base.VisitPredefinedType(node);
         }
@@ -152,7 +153,9 @@ namespace CodeGen
 
         public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            StackReplace(new CppMethodDeclarationSyntax());
+            CppMethodDeclarationSyntax methodSyntax = StackReplace(new CppMethodDeclarationSyntax()) as CppMethodDeclarationSyntax;
+            methodSyntax.Identifier = node.Identifier.ToString();
+            methodSyntax.Modifiers = node.Modifiers.Select(m => m.ToString()).ToList();
 
             base.VisitMethodDeclaration(node);
         }
@@ -169,6 +172,14 @@ namespace CodeGen
             StackReplace(new CppTypeParameterListSyntax());
 
             base.VisitTypeParameterList(node);
+        }
+
+        public override void VisitParameter(ParameterSyntax node)
+        {
+            CppParameterSyntax parameterSyntax = StackReplace(new CppParameterSyntax()) as CppParameterSyntax;
+            parameterSyntax.Identifier = node.Identifier.ToString();
+
+            base.VisitParameter(node);
         }
 
         public override void VisitExpressionStatement(ExpressionStatementSyntax node)

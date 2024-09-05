@@ -66,6 +66,7 @@
     <Compile Include="src\CppSyntax\CppCompilationUnitNode.cs" />
     <Compile Include="src\CppSyntax\CppExpressionStatementSyntax.cs" />
     <Compile Include="src\CppSyntax\CppAddExpressionSyntax.cs" />
+    <Compile Include="src\CppSyntax\CppParameterSyntax.cs" />
     <Compile Include="src\CppSyntax\CppTypeParameterListSyntax.cs" />
     <Compile Include="src\CppSyntax\CppParameterListSyntax.cs" />
     <Compile Include="src\CppSyntax\CppMethodDeclarationSyntax.cs" />

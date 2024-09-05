@@ -38,16 +38,50 @@ namespace CodeGen.CppSyntax
             formated.WriteLine("");
             formated.WriteLine("{");
 
-
-            formated.SetTabs(depth + 1); // indent after visibility tag
-            formated.WriteLine("public:");
-            foreach (var member in Methods)
+            var PublicMethods = Methods.Where(m => m.IsPublic).ToList();
+            if (PublicMethods.Count != 0)
             {
-                formated.WriteLine(member.GetHeaderText(depth));
+                formated.SetTabs(depth + 1); // indent after visibility tag
+                formated.WriteLine("public:");
+                foreach (var member in PublicMethods)
+                {
+                    formated.WriteLine(member.GetHeaderText(depth));
+                }
+            
+                formated.SetTabs(depth);
+                formated.WriteLine("");
             }
 
-            formated.SetTabs(depth);
-            formated.WriteLine("");
+            var PrivateMethods = Methods.Where(m => m.IsPrivate).ToList();
+            if (PrivateMethods.Count != 0)
+            {
+                formated.SetTabs(depth + 1); // indent after visibility tag
+                formated.WriteLine("private:");
+                foreach (var member in PrivateMethods)
+                {
+                    formated.WriteLine(member.GetHeaderText(depth));
+                }
+
+                formated.SetTabs(depth);
+                formated.WriteLine("");
+            }
+
+            var ProtectedMethods = Methods.Where(m => m.IsProtected).ToList();
+            if (ProtectedMethods.Count != 0)
+            {
+                formated.SetTabs(depth + 1); // indent after visibility tag
+                formated.WriteLine("protected:");
+                foreach (var member in ProtectedMethods)
+                {
+                    formated.WriteLine(member.GetHeaderText(depth));
+                }
+
+                formated.SetTabs(depth);
+                formated.WriteLine("");
+            }
+
+
+
             formated.WriteLine("}");
             return formated.ToString();
         }

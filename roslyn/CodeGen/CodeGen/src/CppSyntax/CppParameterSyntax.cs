@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CodeGen.CppSyntax
 {
-    class CppPredefineType : CppSyntaxNode
+    internal sealed class CppParameterSyntax : CppSyntaxNode
     {
-        private string _typeName;
+        private string _name;
 
-        public string TypeName { get => _typeName; set => _typeName = value;
-        }
-        public CppPredefineType() : base(CppSyntaxKind.PredefinedType)
+        public string Identifier { get => _name; set => _name = value; }
+
+        public CppParameterSyntax() : base(CppSyntaxKind.Parameter)
         {
 
         }
