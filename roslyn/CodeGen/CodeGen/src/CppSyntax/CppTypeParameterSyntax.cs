@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeGen.CppSyntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace CodeGen.CppSyntax
 {
-    internal sealed class CppParameterSyntax : CppSyntaxNode
+    internal class CppTypeParameterSyntax : CppSyntaxNode
     {
         private string _name;
 
         public string Identifier { get => _name; set => _name = value; }
 
-        public CppParameterSyntax() : base(CppSyntaxKind.Parameter)
+        public CppTypeParameterSyntax() : base(CppSyntaxKind.TypeParameter)
         {
 
         }

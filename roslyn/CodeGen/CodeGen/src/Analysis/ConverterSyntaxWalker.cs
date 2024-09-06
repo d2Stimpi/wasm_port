@@ -155,6 +155,7 @@ namespace CodeGen
         {
             CppMethodDeclarationSyntax methodSyntax = StackReplace(new CppMethodDeclarationSyntax()) as CppMethodDeclarationSyntax;
             methodSyntax.Identifier = node.Identifier.ToString();
+            methodSyntax.ReturnType = node.ReturnType.ToString();
             methodSyntax.Modifiers = node.Modifiers.Select(m => m.ToString()).ToList();
 
             base.VisitMethodDeclaration(node);
@@ -167,6 +168,14 @@ namespace CodeGen
             base.VisitParameterList(node);
         }
 
+        public override void VisitParameter(ParameterSyntax node)
+        {
+            CppParameterSyntax parameterSyntax = StackReplace(new CppParameterSyntax()) as CppParameterSyntax;
+            parameterSyntax.Identifier = node.Identifier.ToString();
+
+            base.VisitParameter(node);
+        }
+
         public override void VisitTypeParameterList(TypeParameterListSyntax node)
         {
             StackReplace(new CppTypeParameterListSyntax());
@@ -174,12 +183,12 @@ namespace CodeGen
             base.VisitTypeParameterList(node);
         }
 
-        public override void VisitParameter(ParameterSyntax node)
+        public override void VisitTypeParameter(TypeParameterSyntax node)
         {
-            CppParameterSyntax parameterSyntax = StackReplace(new CppParameterSyntax()) as CppParameterSyntax;
-            parameterSyntax.Identifier = node.Identifier.ToString();
+            CppTypeParameterSyntax typeParamSytnax = StackReplace(new CppTypeParameterSyntax()) as CppTypeParameterSyntax;
+            typeParamSytnax.Identifier = node.Identifier.ToString();
 
-            base.VisitParameter(node);
+            base.VisitTypeParameter(node);
         }
 
         public override void VisitExpressionStatement(ExpressionStatementSyntax node)

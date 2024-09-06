@@ -10,8 +10,10 @@ namespace CodeGen.CppSyntax
     {
         private string _name;
         private List<string> _modifiers;
+        private string _retTypeName;
 
         public string Identifier { get => _name; set => _name = value; }
+        public string ReturnType { get => _retTypeName; set => _retTypeName = value; }
         public List<string> Modifiers { get => _modifiers; set => _modifiers = value; }
         public Boolean IsStatic { get => _modifiers.Contains("static"); }
         public Boolean IsAbstract { get => _modifiers.Contains("abstract"); }
@@ -26,29 +28,41 @@ namespace CodeGen.CppSyntax
 
         public override string GetHeaderText(int depth)
         {
+            CodeFormatString formated = new CodeFormatString(depth);
             string txt = "";
+
+            // TODO: handle type of "generics" return val
+            if (HasMember<CppTypeParameterListSyntax>())
+            {
+                formated.Write(GetFirstMember<CppTypeParameterListSyntax>().GetHeaderText(0));
+            }
 
             if (IsStatic)
                 txt += "static ";
             
-            if (Members.OfType<CppPredefineType>().Any())
+            if (HasMember<CppPredefineType>())
             {
-                var type = Members.OfType<CppPredefineType>().First();
+                var type = GetFirstMember<CppPredefineType>();
                 txt += type.TypeName + " ";
             }
-
-            // TODO: handle type of "generics" return val
+            else
+            {
+                txt += ReturnType + " ";
+            }
 
             txt += Identifier;
 
             // ParameterList
-            if (Members.OfType<CppParameterListSyntax>().Any())
+            txt += "(";
+            if (HasMember<CppParameterListSyntax>())
             {
-                var parameterList = Members.OfType<CppParameterListSyntax>().First();
+                var parameterList = GetFirstMember<CppParameterListSyntax>();
                 txt += parameterList.GetHeaderText(0);
             }
+            txt += ");";
 
-            return txt;
+            formated.Write(txt);
+            return formated.ToString();
         }
 
         public override string GetSourceText(int depth)

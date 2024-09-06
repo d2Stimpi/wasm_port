@@ -19,12 +19,12 @@ namespace CodeGen.CppSyntax
 
         public override string GetHeaderText(int depth)
         {
-            return "";
+            return TypeName;
         }
 
         public override string GetSourceText(int depth)
         {
-            return "";
+            return TypeName;
         }
     }
 }

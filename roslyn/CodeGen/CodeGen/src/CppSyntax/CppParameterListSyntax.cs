@@ -15,12 +15,17 @@ namespace CodeGen.CppSyntax
         public override string GetHeaderText(int depth)
         {
             CodeFormatString formated = new CodeFormatString(depth);
+            string argsText = "";
 
             foreach (var param in Members)
             {
-                formated.Write(param.GetHeaderText(depth));
+                if (argsText.Length == 0)
+                    argsText += param.GetHeaderText(depth);
+                else
+                    argsText += ", " + param.GetHeaderText(depth);
             }
 
+            formated.Write(argsText);
             return formated.ToString();
         }
 

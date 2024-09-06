@@ -12,6 +12,7 @@ namespace CodeGen.CppSyntax
         private CppSyntaxKind _kind;
 
         public List<CppSyntaxNode> Members { get => _leafNodes; }
+        public CppSyntaxNode FirstMember { get => _leafNodes.First(); }
         public CppSyntaxKind Kind { get => _kind; }
 
         public CppSyntaxNode(CppSyntaxKind kind)
@@ -22,6 +23,16 @@ namespace CodeGen.CppSyntax
         public void AddNode(CppSyntaxNode node)
         {
             _leafNodes.Add(node);
+        }
+
+        public bool HasMember<T>() where T : CppSyntaxNode, new()
+        {
+            return Members.OfType<T>().Any();
+        }
+
+        public T GetFirstMember<T>() where T : CppSyntaxNode, new()
+        {
+            return Members.OfType<T>().First();
         }
 
         public abstract string GetHeaderText(int depth);

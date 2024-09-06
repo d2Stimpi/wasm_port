@@ -41,11 +41,11 @@ namespace CodeGen.CppSyntax
             var PublicMethods = Methods.Where(m => m.IsPublic).ToList();
             if (PublicMethods.Count != 0)
             {
-                formated.SetTabs(depth + 1); // indent after visibility tag
+                formated.SetTabs(depth + 1); // indent after visibility tag (tabs applied after endl)
                 formated.WriteLine("public:");
                 foreach (var member in PublicMethods)
                 {
-                    formated.WriteLine(member.GetHeaderText(depth));
+                    formated.WriteLine(member.GetHeaderText(0));
                 }
             
                 formated.SetTabs(depth);
@@ -59,7 +59,7 @@ namespace CodeGen.CppSyntax
                 formated.WriteLine("private:");
                 foreach (var member in PrivateMethods)
                 {
-                    formated.WriteLine(member.GetHeaderText(depth));
+                    formated.WriteLine(member.GetHeaderText(0));
                 }
 
                 formated.SetTabs(depth);
