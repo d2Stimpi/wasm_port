@@ -51,6 +51,17 @@
                                                                 AddExpression
                                                                         IdentifierName
                                                                         NumericLiteralExpression
+                                                 SetAccessorDeclaration
+                                                         ArrowExpressionClause
+                                                                 SimpleAssignmentExpression
+                                                                         IdentifierName
+                                                                         IdentifierName
+                                PropertyDeclaration
+                                        IdentifierName
+                                        AccessorList
+                                                GetAccessorDeclaration
+                                                        ArrowExpressionClause
+                                                                IdentifierName
                                 MethodDeclaration
                                         PredefinedType
                                         ParameterList

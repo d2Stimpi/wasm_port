@@ -8,6 +8,10 @@ namespace CodeGen.CppSyntax
 {
     class CppVariableDeclaratorSyntax : CppSyntaxNode
     {
+        private string _name;
+
+        public string Identifier { get => _name; set => _name = value; }
+
         public CppVariableDeclaratorSyntax() : base(CppSyntaxKind.VariableDeclarator)
         {
 
@@ -15,7 +19,7 @@ namespace CodeGen.CppSyntax
 
         public override string GetHeaderText(int depth)
         {
-            return "";
+            return Identifier;
         }
 
         public override string GetSourceText(int depth)

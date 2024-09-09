@@ -15,10 +15,12 @@ namespace CodeGen
     {
         private CppSyntaxNode _rootNode;
         private Stack<CppSyntaxNode> _nodeStack = new Stack<CppSyntaxNode>();
+        private CppClassSyntax _classNode;
 
         private List<SyntaxKind> _skipSyntaxKinds = new List<SyntaxKind>()
         {
             SyntaxKind.UsingDirective,
+            SyntaxKind.PropertyDeclaration,
         };
 
 
@@ -52,6 +54,11 @@ namespace CodeGen
                 var leafNode = _nodeStack.Pop();
                 _nodeStack.Peek().AddNode(leafNode);
             }
+            else
+            {
+                // Visit skipped nodes, since some of them are converted
+                base.Visit(node);
+            }
         }
 
         public override void VisitCompilationUnit(CompilationUnitSyntax node)
@@ -63,7 +70,8 @@ namespace CodeGen
 
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
-            StackReplace(new CppIdentifierSyntax());
+            CppIdentifierSyntax identifierSyntax = StackReplace(new CppIdentifierSyntax()) as CppIdentifierSyntax;
+            identifierSyntax.Identifier = node.Identifier.ToString();
 
             base.VisitIdentifierName(node);
         }
@@ -78,8 +86,8 @@ namespace CodeGen
 
         public override void VisitClassDeclaration(ClassDeclarationSyntax node)
         {
-            CppClassSyntax classSyntax = StackReplace(new CppClassSyntax()) as CppClassSyntax;
-            classSyntax.Identifier = node.Identifier.ToString();
+            _classNode = StackReplace(new CppClassSyntax()) as CppClassSyntax;
+            _classNode.Identifier = node.Identifier.ToString();
 
             base.VisitClassDeclaration(node);
         }
@@ -100,7 +108,8 @@ namespace CodeGen
 
         public override void VisitFieldDeclaration(FieldDeclarationSyntax node)
         {
-            StackReplace(new CppFieldDeclarationSyntax());
+            CppFieldDeclarationSyntax fieldSyntax = StackReplace(new CppFieldDeclarationSyntax()) as CppFieldDeclarationSyntax;
+            fieldSyntax.Modifiers = node.Modifiers.Select(m => m.ToString()).ToList();
 
             base.VisitFieldDeclaration(node);
         }
@@ -115,7 +124,8 @@ namespace CodeGen
 
         public override void VisitVariableDeclarator(VariableDeclaratorSyntax node)
         {
-            StackReplace(new CppVariableDeclaratorSyntax());
+            CppVariableDeclaratorSyntax declaratorSyntax = StackReplace(new CppVariableDeclaratorSyntax()) as CppVariableDeclaratorSyntax;
+            declaratorSyntax.Identifier = node.Identifier.ToString();
 
             base.VisitVariableDeclarator(node);
         }
@@ -216,6 +226,9 @@ namespace CodeGen
         {
             PropertyConverter propertyConverter = new PropertyConverter();
             propertyConverter.VisitPropertyDeclaration(node);
+
+            _classNode.AddNode(propertyConverter.GetMethod);
+            _classNode.AddNode(propertyConverter.SetMethod);
         }
     }
 }

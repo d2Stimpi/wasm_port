@@ -26,17 +26,16 @@ namespace CodeGen.CppSyntax
             CodeFormatString formated = new CodeFormatString(depth);
 
             formated.Write($"class {Identifier}");
-            if (BaseList.Count() != 0)
+            if (HasMember<CppBaseListSyntax>())
             {
                 formated.Write(" : ");
-                foreach (var member in BaseList)
-                {
-                    formated.Write(member.GetHeaderText(depth));
-                }
+                formated.Write(GetFirstMember<CppBaseListSyntax>().GetHeaderText(0));
             }
             // complete the class declaration line
             formated.WriteLine("");
             formated.WriteLine("{");
+
+            // Method members section
 
             var PublicMethods = Methods.Where(m => m.IsPublic).ToList();
             if (PublicMethods.Count != 0)
@@ -73,14 +72,62 @@ namespace CodeGen.CppSyntax
                 formated.WriteLine("protected:");
                 foreach (var member in ProtectedMethods)
                 {
-                    formated.WriteLine(member.GetHeaderText(depth));
+                    formated.WriteLine(member.GetHeaderText(0));
                 }
 
                 formated.SetTabs(depth);
                 formated.WriteLine("");
             }
 
+            // Variable mMembers section
 
+            var PublicMembers = Fields.Where(f => f.IsPublic).ToList();
+            if (PublicMembers.Count != 0)
+            {
+                formated.SetTabs(depth + 1); // indent after visibility tag
+                formated.WriteLine("public:");
+                foreach (var member in PublicMembers)
+                {
+                    if (member.IsStatic)
+                        formated.Write("static ");
+                    formated.WriteLine(member.GetHeaderText(0));
+                }
+
+                formated.SetTabs(depth);
+                formated.WriteLine("");
+            }
+
+            var PrivateMembers = Fields.Where(f => f.IsPrivate).ToList();
+            if (PrivateMembers.Count != 0)
+            {
+                formated.SetTabs(depth + 1); // indent after visibility tag
+                formated.WriteLine("private:");
+                foreach (var member in PrivateMembers)
+                {
+                    if (member.IsStatic)
+                        formated.Write("static ");
+                    formated.WriteLine(member.GetHeaderText(0));
+                }
+
+                formated.SetTabs(depth);
+                formated.WriteLine("");
+            }
+
+            var ProtectedMembers = Fields.Where(f => f.IsProtected).ToList();
+            if (ProtectedMembers.Count != 0)
+            {
+                formated.SetTabs(depth + 1); // indent after visibility tag
+                formated.WriteLine("protected:");
+                foreach (var member in ProtectedMembers)
+                {
+                    if (member.IsStatic)
+                        formated.Write("static ");
+                    formated.WriteLine(member.GetHeaderText(0));
+                }
+
+                formated.SetTabs(depth);
+                formated.WriteLine("");
+            }
 
             formated.WriteLine("}");
             return formated.ToString();

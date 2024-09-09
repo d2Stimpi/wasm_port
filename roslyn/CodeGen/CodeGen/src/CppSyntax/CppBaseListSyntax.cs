@@ -15,8 +15,18 @@ namespace CodeGen.CppSyntax
         public override string GetHeaderText(int depth)
         {
             CodeFormatString formated = new CodeFormatString(depth);
+            string baseListText = "";
 
-            return "";
+            foreach (var member in Members)
+            {
+                if (baseListText.Length == 0)
+                    baseListText += "public " + member.GetHeaderText(0);
+                else
+                    baseListText += ", " + member.GetHeaderText(0);
+            }
+            formated.Write(baseListText);
+
+            return formated.ToString();
         }
 
         public override string GetSourceText(int depth)

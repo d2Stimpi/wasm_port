@@ -11,8 +11,11 @@ namespace Stimpi
         private int _number = 10;
         private static float _floatNum;
         public QuadComponent _quad;
+        public CameraComponent _camera;
 
         public int Number { get => _number + 5; }
+        public int AnotherNumber { get => _number + 15; set => _number = value; }
+        public CameraComponent Camera { get => _camera; }
 
         public void MethodOne()
         {
@@ -24,6 +27,11 @@ namespace Stimpi
         }
 
         private static int MethodTwo(int arg1, int arg2)
+        {
+            return arg1 + arg2;
+        }
+
+        private static int MethodThree(BaseObject arg1, BaseObject arg2)
         {
             return arg1 + arg2;
         }

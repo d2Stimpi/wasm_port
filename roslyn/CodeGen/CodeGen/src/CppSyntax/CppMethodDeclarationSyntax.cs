@@ -8,13 +8,14 @@ namespace CodeGen.CppSyntax
 {
     class CppMethodDeclarationSyntax : CppSyntaxNode
     {
-        private string _name;
-        private List<string> _modifiers;
-        private string _retTypeName;
+        private string _name = "UnknownMethod";
+        private List<string> _modifiers = new List<string>();
+        private string _retTypeName = "void";
 
         public string Identifier { get => _name; set => _name = value; }
         public string ReturnType { get => _retTypeName; set => _retTypeName = value; }
         public List<string> Modifiers { get => _modifiers; set => _modifiers = value; }
+
         public Boolean IsStatic { get => _modifiers.Contains("static"); }
         public Boolean IsAbstract { get => _modifiers.Contains("abstract"); }
         public Boolean IsPublic { get => _modifiers.Contains("public"); }

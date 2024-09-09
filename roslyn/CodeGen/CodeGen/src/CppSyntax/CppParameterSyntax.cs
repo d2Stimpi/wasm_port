@@ -23,6 +23,8 @@ namespace CodeGen.CppSyntax
 
             if (Members.OfType<CppPredefineType>().Any())
                 txt += FirstMember.GetHeaderText(depth) + " ";
+            else if (Members.OfType<CppIdentifierSyntax>().Any())
+                txt += FirstMember.GetHeaderText(depth) + " ";
 
             txt += Identifier;
 

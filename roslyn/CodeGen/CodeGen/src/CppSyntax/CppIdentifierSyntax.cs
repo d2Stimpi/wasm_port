@@ -8,6 +8,10 @@ namespace CodeGen.CppSyntax
 {
     internal sealed class CppIdentifierSyntax : CppSyntaxNode
     {
+        private string _name;
+
+        public string Identifier { get => _name; set => _name = value; }
+
         public CppIdentifierSyntax() : base(CppSyntaxKind.IdentifierName)
         {
 
@@ -15,7 +19,11 @@ namespace CodeGen.CppSyntax
 
         public override string GetHeaderText(int depth)
         {
-            return "";
+            CodeFormatString formated = new CodeFormatString(depth);
+
+            formated.Write(Identifier);
+
+            return formated.ToString();
         }
 
         public override string GetSourceText(int depth)
